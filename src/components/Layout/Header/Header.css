@@ -15,6 +15,7 @@ header {
     text-align: center;
     font-size: 12px;
     color: white;
+    
   }
   
   .global-notification a {
@@ -26,6 +27,7 @@ header {
     height: 90px;
     display: flex;
     align-items: center;
+
   }
   
   .header-wrapper {
