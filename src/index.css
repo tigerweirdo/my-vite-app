@@ -160,10 +160,10 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Colors */
 :root {
-  --primaryColor: #000000;
+  --primaryColor: #1a72ea;
+  --green: #269644;
+  --red: #e0382e;
+  --blue: #1a72ea;
+  --yellow: #fbc119;
 }
 
-/* Kullanım */
-.example-element {
-  border-color: var(--primaryColor);
-}
