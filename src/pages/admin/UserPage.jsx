@@ -8,21 +8,21 @@ const UserPage = () => {
 
   const columns = [
     {
-        title: "Avatar",
-        dataIndex: "avatar",
-        key: "avatar",
-        render: (imgSrc) => (
-          <img
-            src={imgSrc}
-            alt="Avatar"
-            style={{
-              width: "50px",
-              height: "50px",
-              borderRadius: "50%",
-            }}
-          />
-        ),
-      },
+      title: "Avatar",
+      dataIndex: "avatar",
+      key: "avatar",
+      render: (imgSrc) => (
+        <img
+          src={imgSrc}
+          alt="Avatar"
+          style={{
+            width: "50px",
+            height: "50px",
+            borderRadius: "50%",
+          }}
+        />
+      ),
+    },
     {
       title: "Username",
       dataIndex: "username",
@@ -39,23 +39,23 @@ const UserPage = () => {
       key: "role",
     },
     {
-        title: "Actions",
-        dataIndex: "actions",
-        key: "actions",
-        render: (_, record) => (
-          <Popconfirm
-            title="Kullanıcıyı Sil"
-            description="Kullanıcıyı silmek istediğinizden emin misiniz?"
-            okText="Evet"
-            cancelText="Hayır"
-            onConfirm={() => deleteUser(record.email)}
-          >
-            <Button type="primary" danger>
-              Sil
-            </Button>
-          </Popconfirm>
-        ),
-      },
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      render: (_, record) => (
+        <Popconfirm
+          title="Kullanıcıyı Sil"
+          description="Kullanıcıyı silmek istediğinizden emin misiniz?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() => deleteUser(record.email)}
+        >
+          <Button type="primary" danger>
+            Sil
+          </Button>
+        </Popconfirm>
+      ),
+    },
   ];
 
   const fetchUsers = useCallback(async () => {
@@ -68,10 +68,10 @@ const UserPage = () => {
         const data = await response.json();
         setDataSource(data);
       } else {
-        message.error("Giriş başarısız.");
+        message.error("Veri getirme başarısız.");
       }
     } catch (error) {
-      console.log("Giriş hatası:", error);
+      console.log("Veri hatası:", error);
     } finally {
       setLoading(false);
     }
@@ -93,6 +93,7 @@ const UserPage = () => {
       console.log("Silme hatası:", error);
     }
   };
+
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);

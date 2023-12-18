@@ -6,6 +6,7 @@ import CartProgress from "./CartProgress";
 import CartTable from "./CartTable";
 import CartTotals from "./CartTotals";
 
+
 const Cart = () => {
   const { cartItems } = useContext(CartContext);
   return (
