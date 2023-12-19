@@ -101,8 +101,8 @@ const Contact = () => {
               <div className="contact-info-item">
                 <div className="contact-info-texts">
                   <strong>Contact Information</strong>
-                  <p className="contact-street">{contactInfo.address}</p>
-                  <a href={`tel:${contactInfo.phone}`}>Phone: {contactInfo.phone}</a>
+                  <p className="contact-street">Adres: {contactInfo.address}</p>
+                  <a href={`tel:${contactInfo.phone}`}>Telefon: {contactInfo.phone}</a>
                   <a href={`mailto:${contactInfo.email}`}>Email: {contactInfo.email}</a>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import { Button, Space, Table, message, Modal, Form, Input } from 'antd';
+import { Button, Space, Table, message, Modal, Form, Input, Tooltip } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 
 const ContactPage = () => {
@@ -27,6 +27,11 @@ const ContactPage = () => {
       title: 'Google Maps URL',
       dataIndex: 'googleMapsUrl',
       key: 'googleMapsUrl',
+      render: url => (
+        <Tooltip title={url}>
+          {url.length > 50 ? `${url.substring(0, 50)}...` : url}
+        </Tooltip>
+      ),
     },
     {
       title: 'Actions',
