@@ -1,21 +1,49 @@
-import "./Contact.css"
+import { useState, useEffect } from 'react';
+import "./Contact.css";
 
 const Contact = () => {
+  const [contactInfo, setContactInfo] = useState({
+    email: '',
+    phone: '',
+    address: '',
+    googleMapsUrl: '',
+  });
+
+  useEffect(() => {
+    // Fetch contact info from the backend
+    const fetchContactInfo = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/api/contact`);
+        if (response.ok) {
+          const data = await response.json();
+          setContactInfo(data);
+        } else {
+          console.error('Failed to fetch contact info');
+        }
+      } catch (error) {
+        console.error('Error fetching contact info:', error);
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
+
   return (
     <section className="contact">
       <div className="contact-top">
         <div className="contact-map">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3046.261202032901!2d28.968082175572498!3d40.22549426725721!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ca14111ab066f7%3A0x4e5ec1852ca48a25!2sPodyumPark!5e0!3m2!1str!2str!4v1702159991989!5m2!1str!2str"
-            width="100%"
-            height="500"
-            style={{
-              border: "0",
-            }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          {contactInfo.googleMapsUrl && (
+            <iframe
+              src={contactInfo.googleMapsUrl}
+              width="100%"
+              height="500"
+              style={{ border: "0" }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          )}
         </div>
       </div>
       <div className="contact-bottom">
@@ -72,24 +100,13 @@ const Contact = () => {
             <div className="contact-info">
               <div className="contact-info-item">
                 <div className="contact-info-texts">
-                  <strong> Clotya Store</strong>
-                  <p className="contact-street">
-                    Clotya Store Germany — 785 15h Street, Office 478/B Green
-                    Mall Berlin, De 81566
-                  </p>
-                  <a href="tel:Phone: +1 1234 567 88">Phone: +1 1234 567 88</a>
-                  <a href="mailto:Email: contact@example.com">
-                    Email: contact@example.com
-                  </a>
+                  <strong>Contact Information</strong>
+                  <p className="contact-street">{contactInfo.address}</p>
+                  <a href={`tel:${contactInfo.phone}`}>Phone: {contactInfo.phone}</a>
+                  <a href={`mailto:${contactInfo.email}`}>Email: {contactInfo.email}</a>
                 </div>
               </div>
-              <div className="contact-info-item">
-                <div className="contact-info-texts">
-                  <strong> Opening Hours</strong>
-                  <p className="contact-date">Monday - Friday : 9am - 5pm</p>
-                  <p>Weekend Closed</p>
-                </div>
-              </div>
+              {/* Additional contact information can be added here */}
             </div>
           </div>
         </div>
