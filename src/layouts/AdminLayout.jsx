@@ -8,6 +8,7 @@ import {
   DashboardOutlined,
   ShoppingCartOutlined,
   AppstoreOutlined,
+  ContactsOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -120,6 +121,15 @@ const AdminLayout = ({ children }) => {
       path: "/admin/orders",
       onClick: () => {
         navigate(`/admin/orders`);
+      },
+    },
+    {
+      key: '14',
+      icon: <ContactsOutlined />,
+      label: 'İletişim Bilgileri',
+      path: '/admin/contact',
+      onClick: () => {
+        navigate('/admin/contact');
       },
     },
     {
