@@ -23,6 +23,7 @@ import Success from "./pages/Success";
 import OrderPage from "./pages/Admin/OrderPage";
 import DashboardPage from "./pages/Admin/DashboardPage";
 import Contact from "./pages/Admin/Contact/Contact";
+import Blog from "./pages/Admin/Blog";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
         <Route path="coupons/update/:id" element={<UpdateCouponPage />} />
         <Route path="orders" element={<OrderPage />} />
         <Route path="Contact" element={<Contact />} />
+        <Route path="Blog" element={<Blog />} />
        
       </Route>
     </Routes>
