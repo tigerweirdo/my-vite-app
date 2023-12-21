@@ -1,9 +1,15 @@
 .blog-list .blog-image {
   display: flex;
+  width: 100%; /* veya belirli bir genişlik */
+  height: 200px; /* sabit yükseklik */
+  overflow: hidden; /* taşan kısımları gizle */
 }
+
 
 .blog-list .blog-image img {
   width: 100%;
+  height: 100%;
+  object-fit: cover; 
 }
 
 .blog-item .blog-info {

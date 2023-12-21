@@ -30,34 +30,20 @@ const BlogDetails = () => {
 
   return (
     <section className="single-blog">
-      <div className="container">
-        <article>
-          <figure>
-            <img src={blog.imageUrl} alt={blog.title} />
-          </figure>
-          <div className="blog-wrapper">
-            <div className="blog-meta">
-              <div className="blog-category">
-                
-              </div>
-              <div className="blog-date">
-                <time dateTime={blog.createdAt}>{new Date(blog.createdAt).toLocaleDateString()}</time>
-
-              </div>
-              <div className="blog-tags">
-                
-              </div>
-            </div>
-            <h1 className="blog-title">{blog.title}</h1>
-            <div className="blog-content">
-              {blog.content}
-            </div>
-          </div>
-        </article>
-       
-      </div>
-    </section>
-  );
+    <div className="container">
+      <article>
+        <figure>
+          <img src={blog.imageUrl} alt={blog.title} />
+        </figure>
+        <div className="blog-wrapper">
+          {/* Diğer blog bilgileri */}
+          <h1 className="blog-title">{blog.title}</h1>
+          <div className="blog-content" dangerouslySetInnerHTML={{ __html: blog.content }} />
+        </div>
+      </article>
+    </div>
+  </section>
+);
 };
 
 export default BlogDetails;

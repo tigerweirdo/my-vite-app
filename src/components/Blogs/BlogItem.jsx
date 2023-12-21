@@ -3,11 +3,16 @@ import { Link } from 'react-router-dom';
 import "./BlogItem.css";
 
 const BlogItem = ({ blog }) => {
+    // Varsayılan resim URL'si
+    const defaultImageUrl = "https://example.com/default-image.jpg"; // Varsayılan resminiz burada
+
+    // Eğer blog.imageUrl boş veya tanımlanmamışsa, varsayılan resmi kullan
+    const imageUrl = blog.imageUrl || defaultImageUrl;
   return (
     <li className="blog-item">
       <Link to={`/blog/${blog._id}`}>
         <div className="blog-image">
-          <img src={blog.imageUrl} alt={blog.title} />
+          <img src={imageUrl} alt={blog.title} />
         </div>
         <div className="blog-info">
          
@@ -15,7 +20,7 @@ const BlogItem = ({ blog }) => {
             <h3>{blog.title}</h3>
           </div>
           <div className="blog-info-bottom">
-            <span>Read More</span>
+            <span>Read</span>
           </div>
         </div>
       </Link>

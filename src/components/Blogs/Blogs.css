@@ -8,4 +8,14 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 30px;
   }
-  /*! blogs end  */
+/* BlogItem hover efekti */
+.blog-list li:hover {
+  transform: scale(1.01); /* Bileşeni %5 oranında büyüt */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Gölge efekti ekle */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animasyon süresi ve geçiş efekti */
+}
+
+/* BlogItem normal durumu */
+.blog-list li {
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animasyon süresi ve geçiş efekti */
+}

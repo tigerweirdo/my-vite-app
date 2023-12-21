@@ -24,8 +24,7 @@ const Blogs = () => {
     <section className="blogs">
       <div className="container">
         <div className="section-title">
-          <h2>From Our Blog</h2>
-          <p>Summer Collection New Modern Design</p>
+          <h2>From Our Blog</h2>         
         </div>
         <ul className="blog-list">
           {blogs.map(blog => (

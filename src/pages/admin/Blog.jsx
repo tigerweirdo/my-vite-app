@@ -1,22 +1,18 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Button, Space, Table, message, Modal, Form, Input, Typography } from 'antd';
+import { Button, Card, Col, Row, Modal, Form, Input, message, Space } from 'antd';
+import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { Editor } from '@tinymce/tinymce-react';
 
-
-
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
 const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState(null);
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
-  const { Text } = Typography;
-  const [contentModalVisible, setContentModalVisible] = useState(false);
-  const [editableContent, setEditableContent] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [currentBlog, setCurrentBlog] = useState({ title: '', content: '', imageUrl: '' });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [expandedId, setExpandedId] = useState(null);
 
   const fetchBlogs = useCallback(async () => {
-    setLoading(true);
     try {
       const response = await fetch(`${apiUrl}/api/blog`);
       if (!response.ok) {
@@ -26,28 +22,17 @@ const BlogPage = () => {
       setBlogs(data);
     } catch (error) {
       message.error(error.message);
-    } finally {
-      setLoading(false);
     }
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     fetchBlogs();
   }, [fetchBlogs]);
 
   const handleEdit = (blog) => {
-    setCurrentBlog(blog);
+    setCurrentBlog({ ...blog, imageUrl: blog.imageUrl || defaultImageUrl });
     setIsModalOpen(true);
   };
-  const showContentModal = (content) => {
-    setEditableContent(content);
-    setContentModalVisible(true);
-  };
-  const saveContentChanges = () => {
-    // Burada güncellenen içeriği kaydetmek için bir API çağrısı yapılabilir
-    setContentModalVisible(false);
-  };
-    
 
   const handleDelete = async (id) => {
     try {
@@ -62,21 +47,37 @@ const BlogPage = () => {
     }
   };
 
-  const handleFormSubmit = async (values) => {
-    const method = currentBlog ? 'PUT' : 'POST';
-    const endpoint = currentBlog ? `${apiUrl}/api/blog/${currentBlog._id}` : `${apiUrl}/api/blog`;
+  const validateForm = () => {
+    if (!currentBlog.title.trim()) {
+      message.error("Title is required");
+      return false;
+    }
+    if (!currentBlog.content.trim()) {
+      message.error("Content is required");
+      return false;
+    }
+    return true;
+  };
+
+  const handleFormSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    const method = currentBlog._id ? 'PUT' : 'POST';
+    const endpoint = currentBlog._id ? `${apiUrl}/api/blog/${currentBlog._id}` : `${apiUrl}/api/blog`;
 
     try {
       const response = await fetch(endpoint, {
         method: method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
+        body: JSON.stringify(currentBlog),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to ${currentBlog ? 'update' : 'add'} blog`);
+        throw new Error(`Failed to ${currentBlog._id ? 'update' : 'add'} blog`);
       }
-      message.success(`Blog ${currentBlog ? 'updated' : 'added'} successfully`);
+      message.success(`Blog ${currentBlog._id ? 'updated' : 'added'} successfully`);
       setIsModalOpen(false);
       fetchBlogs();
     } catch (error) {
@@ -84,107 +85,115 @@ const BlogPage = () => {
     }
   };
 
-  const truncateText = (text, length) => text.length > length ? `${text.substring(0, length)}...` : text;
+  const handleInputChange = e => {
+    setCurrentBlog({ ...currentBlog, [e.target.name]: e.target.value });
+  };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return isNaN(date.getTime()) ? "Tarih bilinmiyor" : date.toLocaleDateString();
+  const handleEditorChange = (content) => {
+    setCurrentBlog({ ...currentBlog, content: content });
   };
-  const handleImageUrlChange = (e) => {
-    setImageUrl(e.target.value); // Kullanıcının girdiği URL'yi imageUrl state'ine kaydet
+
+  const filteredBlogs = blogs.filter(blog =>
+    blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    blog.content.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const truncateText = (text, length = 700) => {
+    return text.length > length ? `${text.substring(0, length)}...` : text;
   };
-  const renderImagePreview = () => {
-    if (imageUrl) {
-      return <img src={imageUrl} alt="Blog Preview" style={{ maxWidth: '100%', maxHeight: 300 }} />;
+  const toggleExpanded = (id) => {
+    if (expandedId === id) {
+      setExpandedId(null); // Collapse if it's already expanded
+    } else {
+      setExpandedId(id); // Expand the clicked one
     }
-    return null;
   };
+  const defaultImageUrl = 'https://i.pinimg.com/originals/cb/3d/fc/cb3dfcc4a38c5f240486eefd0cc935fc.jpg';
 
-  const columns = [
-    {
-      title: 'Image',
-      dataIndex: 'imageUrl',
-      key: 'imageUrl',
-      render: (imageUrl) => imageUrl ? <img src={imageUrl} alt="Blog" style={{ width: 100, height: 'auto' }} /> : 'No image',
-    },
-    {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
-      render: (title) => <Text>{truncateText(title, 50)}</Text>,
-    },
-    {
-      title: 'Content',
-      dataIndex: 'content',
-      key: 'content',
-      render: (_, record) => <Button onClick={() => showContentModal(record.content)}>View Content</Button>,
-    },
-    {
-      title: 'Oluşturulma Tarihi',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (createdAt) => <Text>{formatDate(createdAt)}</Text>,
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (_, record) => (
-        <Space>
-          <Button onClick={() => handleEdit(record)}>Edit</Button>
-          <Button danger onClick={() => handleDelete(record._id)}>Delete</Button>
-        </Space>
-      ),
-    },
-  ];
+  // Modal açıldığında ve imageUrl boş olduğunda default değeri ata
+  useEffect(() => {
+    if (isModalOpen && !currentBlog.imageUrl) {
+      setCurrentBlog({ ...currentBlog, imageUrl: defaultImageUrl });
+    }
+  }, [isModalOpen, currentBlog, setCurrentBlog]);
 
+  // handleEdit fonksiyonunu düzenle
+ 
   return (
     <>
-      <Button type="primary" onClick={() => { setCurrentBlog(null); setIsModalOpen(true); }}>
-        Add New Blog
-      </Button>
-      <Table dataSource={blogs} columns={columns} rowKey="_id" loading={loading} />
+      <Space style={{ marginBottom: 20 }}>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => handleEdit({ title: '', content: '', imageUrl: '' })}>Add Blog</Button>
+        <Input placeholder="Search blogs" prefix={<SearchOutlined />} onChange={e => setSearchTerm(e.target.value)} />
+      </Space>
+      <Row gutter={[10, 10]}>
+        {filteredBlogs.map(blog => (
+          <Col span={12} key={blog._id}>
+            <Card
+              actions={[
+                <EditOutlined key="edit" onClick={() => handleEdit(blog)} />,
+                <DeleteOutlined key="delete" onClick={() => handleDelete(blog._id)} />
+              ]}
+            >
+            <Card.Meta
+  title={blog.title}
+  description={
+    <div>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: expandedId === blog._id ? blog.content : truncateText(blog.content)
+        }}
+      />
+      {blog.content.length > 1000 && (
+        <Button type="link" onClick={() => toggleExpanded(blog._id)}>
+          {expandedId === blog._id ? 'Read Less' : 'Read More'}
+        </Button>
+      )}
+    </div>
+  }
+/>
+          </Card>
+          </Col>
+        ))}
+      </Row>
       <Modal
-        title={`${currentBlog ? 'Edit' : 'Add'} Blog`}
+        title={`${currentBlog._id ? 'Edit' : 'Add'} Blog`}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
         width={1000}
       >
         <Form
-  key={currentBlog ? currentBlog._id : 'new'} // Her düzenleme için unique key
-  initialValues={currentBlog || { title: '', content: '', imageUrl: '' }}
-  onFinish={handleFormSubmit}
-  layout="vertical"
-><Form.Item name="imageUrl" label="Image URL">
-            <Input value={imageUrl} onChange={handleImageUrlChange} />
+          key={currentBlog._id ? currentBlog._id : 'new'}
+          initialValues={currentBlog}
+          onFinish={handleFormSubmit}
+          layout="vertical"
+        >
+          <Form.Item name="imageUrl" label="imageUrl" rules={[{ required: true }]}>
+            <Input name="imageUrl" value={currentBlog.imageUrl} onChange={handleInputChange} 
+             placeholder="https://images.pexels.com/photos/1193743/pexels-photo-1193743.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" />
           </Form.Item>
-          {renderImagePreview()}
           <Form.Item name="title" label="Title" rules={[{ required: true }]}>
-            <Input />
+            <Input name="title" value={currentBlog.title} onChange={handleInputChange} />
           </Form.Item>
           <Form.Item name="content" label="Content" rules={[{ required: true }]}>
-            <Input.TextArea rows={11} />
+            <Editor
+              apiKey='b7qyuoavbecq0fgj7chnq1dbk51eg8yuz99ui7662jio6pgv'
+              init={{
+                plugins: 'mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+              }}
+              value={currentBlog.content}
+              onEditorChange={handleEditorChange}
+            />
           </Form.Item>
           <Button type="primary" htmlType="submit">
-            {currentBlog ? 'Update' : 'Add'} Blog
+            {currentBlog._id ? 'Update' : 'Add'} Blog
           </Button>
         </Form>
       </Modal>
-      <Modal
-        title="Edit Blog Content"
-        open={contentModalVisible}
-        onCancel={() => setContentModalVisible(false)}
-        onOk={saveContentChanges}
-        okText="Save"
-        width={1000}
-      >
-        <Input.TextArea
-          rows={21}
-          value={editableContent}
-          onChange={(e) => setEditableContent(e.target.value)}
-        />
-      </Modal>
+
     </>
+
   );
 };
 
