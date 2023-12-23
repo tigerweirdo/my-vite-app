@@ -28,18 +28,19 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("user", JSON.stringify(data));
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.user.id);
         message.success("Giriş başarılı.");
-        if (data.role === "admin") {
-          window.location.href = "/admin";
-        } else {
-          navigate("/");
-        }
+
+        // Redirect based on role or default home
+        data.user.role === "admin" ? window.location.href = "/admin" : navigate("/");
       } else {
-        message.error("Giriş başarısız.");
+        const errorData = await response.json(); // Assuming error details are sent in response
+        message.error(`Giriş başarısız: ${errorData.message}`);
       }
     } catch (error) {
-      console.log("Giriş hatası:", error);
+      console.error("Giriş hatası:", error);
+      message.error("Server error occurred during login.");
     }
   };
 
