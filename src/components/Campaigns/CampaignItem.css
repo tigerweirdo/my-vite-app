@@ -1,28 +1,31 @@
 .campaigns .campaign-item {
-    padding: 70px 35px;
-    background-size: cover;
-    background-position: center;
-    flex: 1;
-    color: white;
-  }
-  
-  .campaigns .campaign-item .campaign-title {
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 30px;
-  }
-  
-  .campaigns .campaign-item .campaign-desc {
-    margin: 40px 0;
-    font-size: 14px;
-  }
-  
+  padding: 70px 35px;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  /* Adding position relative to contain absolutely positioned children */
+  position: relative;
+}
 
-  
-  @media (max-width: 768px) {
-    .campaigns .campaign-item {
-      width: 100%;
-      flex: unset !important;
-    }
-  }
-  
+.campaigns .campaign-item img.campaign-image {
+  /* Ensure this class is applied to your <img> in CampaignItem */
+  width: 100%; /* Full width of the container */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Remove any inline behaviors */
+  object-fit: cover; /* Cover the area appropriately */
+}
+
+/* Reserve space for the image using padding-top technique or set a fixed height */
+.campaigns .campaign-item .campaign-image-wrapper {
+  width: 100%;
+  padding-top: 56.25%; /* for 16:9 aspect ratio, adjust as needed */
+  position: relative;
+}
+
+.campaigns .campaign-item img.campaign-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Text styles remain the same, ensure they don't cause shifts */

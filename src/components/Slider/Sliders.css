@@ -15,8 +15,8 @@
   left: 0;
   height: 100%;
   width: 100%;
-  object-fit: cover;
-  object-position: 60%;
+  object-fit: cover; /* Cover the entire area without stretching */
+  object-position: center; /* Adjust as needed */
   z-index: -1;
 }
 
