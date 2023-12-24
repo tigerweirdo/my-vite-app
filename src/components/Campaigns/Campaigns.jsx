@@ -4,7 +4,7 @@ import "./Campaigns.css"
 const Campaigns = () => {
   return (
     <section className="campaigns">
-      <div className="container">
+      <div className="container2">
         <div className="campaigns-wrapper">
           <CampaignItem />
           <CampaignItem />

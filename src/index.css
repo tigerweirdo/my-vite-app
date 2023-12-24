@@ -112,6 +112,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .img-fluid {
   width: 100%;
+  height: auto;
+
 }
 
 /*! base end  */
@@ -160,10 +162,10 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Colors */
 :root {
-  --primaryColor: #1a72ea;
+  --primaryColor: #1b72eb;
   --green: #269644;
   --red: #e0382e;
-  --blue: #1a72ea;
+  --blue: #030405;
   --yellow: #fbc119;
 }
 

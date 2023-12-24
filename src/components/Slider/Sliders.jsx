@@ -1,51 +1,80 @@
-import { useState } from "react";
-import SliderItem from "./SliderItem";
-import "./Sliders.css";
+import { useState, useEffect } from 'react';
+import SliderItem from './SliderItem';
+import './Sliders.css';
 
 const Sliders = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slides, setSlides] = useState([]);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % 3);
-  };
+  useEffect(() => {
+    const fetchSlides = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('http://localhost:5001/api/slider');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setSlides(data);
+        localStorage.setItem('slides', JSON.stringify(data));
+      } catch (error) {
+        console.error('Error fetching slides: ', error);
+        const cachedSlides = localStorage.getItem('slides');
+        if (cachedSlides) {
+          setSlides(JSON.parse(cachedSlides));
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const prevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + 3) % 3);
-  };
+    fetchSlides();
+  }, []);
+
+  const nextSlide = () => setCurrentSlideIndex((prevIndex) => (prevIndex + 1) % slides.length);
+  const prevSlide = () => setCurrentSlideIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length);
+
+  if (isLoading) {
+    return <div>Loading slides...</div>;
+  }
+
+  if (slides.length === 0) {
+    return <div>No slides available</div>;
+  }
+
+  const currentSlide = slides[currentSlideIndex];
+  const imageUrl = currentSlide ? currentSlide.imageUrl : '';
+  const nextImageUrl = slides.length > 1 ? slides[(currentSlideIndex + 1) % slides.length].imageUrl : '';
 
   return (
     <section className="slider">
       <div className="slider-elements">
-        {currentSlide === 0 && <SliderItem imageSrc="img/slider/slider1.jpg" />}
-        {currentSlide === 1 && <SliderItem imageSrc="img/slider/slider2.jpg" />}
-        {currentSlide === 2 && <SliderItem imageSrc="img/slider/slider3.jpg" />}
+        {slides.length > 0 && (
+          <>
+            <link rel="preload" href={nextImageUrl} as="image" />
+            <SliderItem
+              key={imageUrl}
+              imageUrl={imageUrl}
+              loading="lazy"
+              {...currentSlide}
+            />
+          </>
+        )}
         <div className="slider-buttons">
-          <button onClick={prevSlide}>
-            <i className="bi bi-chevron-left"></i>
-          </button>
-          <button onClick={nextSlide}>
-            <i className="bi bi-chevron-right"></i>
-          </button>
+          <button onClick={prevSlide}><i className="bi bi-chevron-left"></i></button>
+          <button onClick={nextSlide}><i className="bi bi-chevron-right"></i></button>
         </div>
         <div className="slider-dots">
-          <button
-            className={`slider-dot ${currentSlide === 0 ? "active" : ""}`}
-            onClick={() => setCurrentSlide(0)}
-          >
-            <span></span>
-          </button>
-          <button
-            className={`slider-dot ${currentSlide === 1 ? "active" : ""}`}
-            onClick={() => setCurrentSlide(1)}
-          >
-            <span></span>
-          </button>
-          <button
-            className={`slider-dot ${currentSlide === 2 ? "active" : ""}`}
-            onClick={() => setCurrentSlide(2)}
-          >
-            <span></span>
-          </button>
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={`slider-dot ${currentSlideIndex === index ? 'active' : ''}`}
+              onClick={() => setCurrentSlideIndex(index)}
+            >
+              <span></span>
+            </button>
+          ))}
         </div>
       </div>
     </section>

@@ -2,12 +2,16 @@ import { useContext } from "react";
 import Proptypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import { CartContext } from "../../../context/CartProvider";
+import { Modal} from 'antd';
 import "./Header.css";
 
 const Header = ({ setIsSearchShow }) => {
   const { cartItems } = useContext(CartContext);
-  const user = localStorage.getItem("user");
+  const user = localStorage.getItem("token");
+  const isAuthenticated = !!localStorage.getItem('token');
   const { pathname } = useLocation();
+
+  
 
   return (
     <header>
@@ -40,38 +44,9 @@ const Header = ({ setIsSearchShow }) => {
                       className={`menu-link ${pathname === "/" && "active"}`}
                     >
                       Home
-                      <i className="bi bi-chevron-down"></i>
                     </Link>
                     <div className="menu-dropdown-wrapper">
-                      <ul className="menu-dropdown-content">
-                        <li>
-                          <a href="#">Home Clean</a>
-                        </li>
-                        <li>
-                          <a href="#">Home Collection</a>
-                        </li>
-                        <li>
-                          <a href="#">Home Minimal</a>
-                        </li>
-                        <li>
-                          <a href="#">Home Modern</a>
-                        </li>
-                        <li>
-                          <a href="#">Home Parallax</a>
-                        </li>
-                        <li>
-                          <a href="#">Home Strong</a>
-                        </li>
-                        <li>
-                          <a href="#">Home Style</a>
-                        </li>
-                        <li>
-                          <a href="#">Home Unique</a>
-                        </li>
-                        <li>
-                          <a href="#">Home RTL</a>
-                        </li>
-                      </ul>
+                      
                     </div>
                   </li>
                   <li className="menu-list-item megamenu-wrapper">
@@ -212,9 +187,9 @@ const Header = ({ setIsSearchShow }) => {
             </div>
             <div className="header-right">
               <div className="header-right-links">
-                <Link to={"/auth"} className="header-account">
-                  <i className="bi bi-person"></i>
-                </Link>
+              <Link to={isAuthenticated ? "/profile" : "/auth"} className="header-account">
+      <i className="bi bi-person"></i> {/* Assuming you are using Bootstrap Icons */}
+    </Link>
                 <button
                   className="search-button"
                   onClick={() => setIsSearchShow(true)}
@@ -233,21 +208,21 @@ const Header = ({ setIsSearchShow }) => {
                   </Link>
                 </div>
                 {user && (
-                  <button
-                    className="search-button"
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          "Çıkış yapmak istediğinize emin misiniz?"
-                        )
-                      ) {
-                        {
-                          localStorage.removeItem("user");
-                          window.location.href = "/";
-                        }
-                      }
-                    }}
-                  >
+               <button
+               className="search-button"
+               onClick={() => {
+                   Modal.confirm({
+                       title: 'Çıkış yapmak istediğinize emin misiniz?', // Title of the confirmation modal
+                       okText: 'Evet', // Text for the confirmation button
+                       cancelText: 'Hayır', // Text for the cancel button
+                       onOk() {
+                           // This function will be called when the user clicks the confirmation button
+                           localStorage.removeItem("token"); // Ensure this is the correct key!
+                           window.location.href = "/";
+                       },
+                   });
+               }}
+           >
                     <i className="bi bi-box-arrow-right"></i>
                   </button>
                 )}
