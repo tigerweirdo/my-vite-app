@@ -9,7 +9,8 @@ import {
   ShoppingCartOutlined,
   AppstoreOutlined,
   ContactsOutlined,
-  BookOutlined
+  BookOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +19,8 @@ const { Sider, Header, Content } = Layout;
 const getUserRole = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   return user ? user.role : null;
+  
+
 };
 
 const AdminLayout = ({ children }) => {
@@ -140,6 +143,15 @@ const AdminLayout = ({ children }) => {
       path: '/admin/blog',
       onClick: () => {
         navigate('/admin/blog');
+      },
+    },
+    {
+      key: '16',
+      icon: <SettingOutlined />,
+      label: 'Blog',
+      path: '/admin/components',
+      onClick: () => {
+        navigate('/admin/components');
       },
     },
     {

@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
 import BlogPage from "./pages/BlogPage";
@@ -25,6 +26,7 @@ import OrderPage from "./pages/Admin/OrderPage";
 import DashboardPage from "./pages/Admin/DashboardPage";
 import Contact from "./pages/Admin/Contact/Contact";
 import Blog from "./pages/Admin/Blog";
+import ComponentsManager from "./pages/Admin/Components Manager/ComponentsManager";
 
 
 function App() {
@@ -55,6 +57,7 @@ function App() {
         <Route path="orders" element={<OrderPage />} />
         <Route path="Contact" element={<Contact />} />
         <Route path="Blog" element={<Blog />} />
+        <Route path="ComponentsManager" element={<ComponentsManager />} />
        
       </Route>
     </Routes>

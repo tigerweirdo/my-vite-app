@@ -30,12 +30,17 @@ const Login = () => {
         const data = await response.json();
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.user.id);
+        localStorage.setItem("userRole", data.user.role);
+  
+        // Kullanıcının rolünü yazdır
+        console.log("Kullanıcı Rolü:", data.user.role);
+  
         message.success("Giriş başarılı.");
-
+  
         // Redirect based on role or default home
         data.user.role === "admin" ? window.location.href = "/admin" : navigate("/");
       } else {
-        const errorData = await response.json(); // Assuming error details are sent in response
+        const errorData = await response.json();
         message.error(`Giriş başarısız: ${errorData.message}`);
       }
     } catch (error) {
