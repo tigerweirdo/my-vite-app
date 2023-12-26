@@ -1,8 +1,9 @@
 import { Layout, Menu } from "antd";
+import { useNavigate,} from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   UserOutlined,
-  LaptopOutlined,
+  LaptopOutlined, 
   RollbackOutlined,
   BarcodeOutlined,
   DashboardOutlined,
@@ -12,20 +13,13 @@ import {
   BookOutlined,
   SettingOutlined
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 
 const { Sider, Header, Content } = Layout;
 
-const getUserRole = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  return user ? user.role : null;
-  
-
-};
-
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
-  const userRole = getUserRole();
+
+
 
   const menuItems = [
     {
@@ -196,59 +190,30 @@ const AdminLayout = ({ children }) => {
     }
   };
 
-  if (userRole === "admin") {
+ 
     return (
       <div className="admin-layout">
-        <Layout
-          style={{
-            minHeight: "100vh",
-          }}
-        >
+        <Layout style={{ minHeight: "100vh" }}>
           <Sider width={200} theme="dark">
-            <Menu
-              mode="vertical"
-              style={{
-                height: "100%",
-              }}
-              items={menuItems}
-              defaultSelectedKeys={[getActiveKey()]}
-            />
+            <Menu mode="vertical" style={{ height: "100%" }} items={menuItems} defaultSelectedKeys={[getActiveKey()]} />
           </Sider>
           <Layout>
-            <Header>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  color: "white",
-                }}
-              >
-                <h2>{getPageTitle()}</h2>
-                <h2>Admin Paneli</h2>
-              </div>
+            <Header style={{ display: "flex", justifyContent: "space-between", color: "white" }}>
+              <h2>{getPageTitle()}</h2>
+              <h2>Admin Paneli</h2>
             </Header>
-            <Content>
-              <div
-                className="site-layout-background"
-                style={{
-                  padding: "24px 50px",
-                  minHeight: 360,
-                }}
-              >
-                {children}
-              </div>
+            <Content style={{ padding: "24px 50px", minHeight: 360 }}>
+              {children}
             </Content>
           </Layout>
         </Layout>
       </div>
     );
-  } else {
-    return (window.location.href = "/");
-  }
+  
 };
-
-export default AdminLayout;
 
 AdminLayout.propTypes = {
   children: PropTypes.node,
 };
+
+export default AdminLayout;

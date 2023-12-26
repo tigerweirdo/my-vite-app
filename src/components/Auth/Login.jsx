@@ -28,27 +28,24 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.user.id);
-        localStorage.setItem("userRole", data.user.role);
-  
-        // Kullanıcının rolünü yazdır
-        console.log("Kullanıcı Rolü:", data.user.role);
-  
+        // Storing the entire user object in localStorage
+        localStorage.setItem("user", JSON.stringify(data.user));  // Note: Changed from data to data.user
         message.success("Giriş başarılı.");
-  
-        // Redirect based on role or default home
-        data.user.role === "admin" ? window.location.href = "/admin" : navigate("/");
+
+        // Adjusted to correctly reference user role from data.user
+        if (data.user.role === "admin") {  // Changed from data.role to data.user.role
+          window.location.href = "/admin";
+        } else {
+          navigate('/');
+        }
       } else {
-        const errorData = await response.json();
-        message.error(`Giriş başarısız: ${errorData.message}`);
+        message.error("Giriş başarısız.");
       }
     } catch (error) {
       console.error("Giriş hatası:", error);
       message.error("Server error occurred during login.");
     }
   };
-
   return (
     <div className="account-column">
       <h2>Login</h2>
