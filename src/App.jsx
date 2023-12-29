@@ -57,8 +57,7 @@ function App() {
         <Route path="orders" element={<OrderPage />} />
         <Route path="Contact" element={<Contact />} />
         <Route path="Blog" element={<Blog />} />
-        <Route path="ComponentsManager" element={<ComponentsManager />} />
-       
+        <Route path="components" element={<ComponentsManager />} /> 
       </Route>
     </Routes>
   );

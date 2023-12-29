@@ -142,7 +142,7 @@ const AdminLayout = ({ children }) => {
     {
       key: '16',
       icon: <SettingOutlined />,
-      label: 'Blog',
+      label: 'Components Manager',
       path: '/admin/components',
       onClick: () => {
         navigate('/admin/components');
