@@ -53,9 +53,22 @@ const SliderManager = () => {
             <Table dataSource={sliders} rowKey="_id">
                 {/* Define your Table columns here */}
             </Table>
-            <Modal title={editingSlider ? "Edit Slider" : "Add New Slider"} visible={isModalVisible} onCancel={handleCancel} footer={null}>
-                <Form initialValues={editingSlider} onFinish={handleSubmit}>
+            <Modal title={editingSlider ? "Edit Slider" : "Add New Slider"}         width={1000}
+ visible={isModalVisible} onCancel={handleCancel} footer={null}>
+                <Form initialValues={editingSlider} onFinish={handleSubmit} layout="vertical">
                     <Form.Item label="Image URL" name="imageUrl">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Title" name="Title">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Description" name="Description">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="ButonText" name="ButonText">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="ButonLink" name="ButonLink">
                         <Input />
                     </Form.Item>
                     {/* Add other form items for title, description, etc. */}
