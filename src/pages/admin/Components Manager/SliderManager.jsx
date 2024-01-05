@@ -41,7 +41,10 @@ const SliderManager = () => {
             setSliders(sliders.filter(slider => slider._id !== id));
             message.success('Slider deleted successfully!');
         })
-       
+        .catch(error => {
+            console.error('Delete Error:', error); // Utilize the error variable
+            message.error('Failed to delete slider');
+        })
         .finally(() => setLoading(false));
     };
 
@@ -69,20 +72,42 @@ const SliderManager = () => {
             message.success(`Slider ${editingSlider ? 'updated' : 'created'} successfully!`);
             // Optionally: Update the sliders state locally instead of refetching from the backend
         })
+        .catch(error => {
+            console.error('Submit Error:', error); // Utilize the error variable
+            message.error(`Failed to ${editingSlider ? 'update' : 'create'} slider`);
+        })
+        .finally(() => setLoading(false));
        
     };
+    function truncate(str, num) {
+        if (str.length > num) {
+            return str.slice(0, num) + "...";
+        } else {
+            return str;
+        }
+    }
 
     // Define your Table columns here
     const columns = [
         {
+            title: 'Image',
+            dataIndex: 'imageUrl',
+            key: 'imageUrl',
+            width: 150, // Set a specific width for the image column
+            render: text => <img src={text} alt="slider" style={{ maxWidth: "100px", height: "auto" }} />,
+        },
+        {
             title: 'Title',
             dataIndex: 'title',
             key: 'title',
+            width: 200,
         },
         {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
+            width: 600, // Set a specific width for the description column
+            render: text => truncate(text, 400),
         },
         {
             title: 'Actions',
