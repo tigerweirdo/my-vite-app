@@ -1,16 +1,17 @@
-/*! campaign start  */
-.campaigns .campaigns-wrapper {
+/* Campaigns container styling */
+.campaigns-wrapper {
   display: flex;
-  gap: 30px;
-  margin: 30px 0;
   flex-wrap: wrap;
-}
-/*! campaign end  */
-@media (max-width: 768px) {
-  .campaigns .campaign-item {
-    width: 100%; /* Full width on smaller screens */
-    padding: 50px 20px; /* Adjust padding for smaller screens */
-    /* Consider adjusting font sizes and other elements for smaller screens */
-  }
+  gap: 30px; /* Keeping the gap */
+  margin: 0 10px; /* Adjusting margin for container */
+  padding: 20px; /* Padding for container */
 }
 
+/* Responsive adjustments for campaign items */
+@media (max-width: 768px) {
+  .campaign-item {
+    width: 100%; /* Full width on smaller screens */
+    padding: 50px 20px; /* Adjust padding for smaller screens */
+    /* You might consider adjusting font sizes and other elements for smaller screens here */
+  }
+}

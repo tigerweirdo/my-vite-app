@@ -1,34 +1,26 @@
-import "./CampaignItem.css";
+import PropTypes from 'prop-types';
+import "./CampaignItem.css"; // CSS dosyasını dahil et
 
-const CampaignItem = () => {
-  // Placeholder for dynamic image URL, use props or state as needed
-  const imageUrl = "path/to/your/image.jpg"; // replace with actual image path or URL
+const CampaignItem = ({ campaign }) => {
+  const { imageUrl, title, description, link } = campaign || {};
+
+  // Komponentin class isimlerini güncelle
   return (
-    <div className="campaign-item">
-      <div className="campaign-image-wrapper">
-        <img 
-          src={imageUrl} 
-          className="campaign-image" 
-          alt="Campaign"
-          loading="lazy" // lazy load the image
-        />
-      </div>
-      <div className="campaign-content">
-        <h3 className="campaign-title">
-          Fashion Month<br/>
-          Ready in Capital<br/>
-          Shop
-        </h3>
-        <p className="campaign-desc">
-          Lorem ipsum dolor sit amet consectetur adipiscing elit dolor
-        </p>
-        <a href="#" className="btn btn-primary">
-          View All
-          <i className="bi bi-arrow-right"></i>
-        </a>
-      </div>
+    <div className="campaign-item" style={{ backgroundImage: `url(${imageUrl})` }}>
+      <h3 className="campaign-title">{title}</h3>
+      <p className="campaign-desc">{description}</p>
+      <a href={link} className="btn btn-primary">View All<i className="bi bi-arrow-right"></i></a>
     </div>
   );
+};
+
+CampaignItem.propTypes = {
+  campaign: PropTypes.shape({
+    imageUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    link: PropTypes.string
+  })
 };
 
 export default CampaignItem;

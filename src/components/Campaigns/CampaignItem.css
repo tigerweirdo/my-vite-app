@@ -1,4 +1,4 @@
-.campaigns .campaign-item {
+.campaign-item {
   padding: 70px 35px;
   background-size: cover;
   background-position: center;
@@ -6,18 +6,19 @@
   color: white;
 }
 
-.campaigns .campaign-item .campaign-title {
+.campaign-item .campaign-title {
   font-size: 26px;
   font-weight: 600;
-  line-height: 30px;
+  line-height: 100px;
 }
 
-.campaigns .campaign-item .campaign-desc {
+.campaign-item .campaign-desc {
   margin: 40px 0;
   font-size: 14px;
 }
+
 @media (max-width: 768px) {
-  .campaigns .campaign-item {
+  .campaign-item {
     width: 100%;
     flex: unset !important;
   }
