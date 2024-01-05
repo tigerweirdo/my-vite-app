@@ -1,10 +1,13 @@
-import SliderManager from "./SliderManager"
-
+import SliderManager from "./SliderManager";
+import CampaignManager from "./CampaignManager";
 
 const ComponentsManager = () => {
   return (
-        <SliderManager/>
-  )
+    <>
+      <SliderManager/>
+      <CampaignManager/>
+    </>
+  );
 }
 
-export default ComponentsManager
+export default ComponentsManager;
