@@ -36,7 +36,7 @@
     z-index: 1;
   }
   
-  .slider .slider-buttons {
+  .slider-buttons {
     position: absolute;
     top: 0;
     left: 0;
@@ -46,7 +46,11 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 30px;
+    /* Belirli bir yükseklik değeri ekleyerek düzen kaymalarını önleyin. Örneğin: */
+    min-height: 50px; /* Bu değer size bağlı olarak değişebilir */
+    
   }
+  
   
   .slider-buttons button {
     width: 40px;
@@ -134,10 +138,14 @@
       height: 100vh; /* Adjust height for mobile devices */
     }
     
-    
-    .slider-buttons {
-      display: none; /* Hide or adjust navigation buttons */
-    }
+    .slider-buttons button,
+.slider .slider-dots .slider-dot {
+  /* existing styles */
+  width: 40px; /* Example fixed width */
+  height: 40px; /* Example fixed height */
+  /* other styles */
+}
+   
   
     .slider .slider-dots {
       bottom: 10px; /* Adjust navigation dots position */

@@ -36,7 +36,7 @@ const Sliders = () => {
   const prevSlide = () => setCurrentSlideIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length);
 
   if (isLoading) {
-    return <div>Loading slides...</div>;
+    return <div className="slider-loading">Loading slides...</div>; // Implement skeleton or spinner here
   }
 
   if (slides.length === 0) {
