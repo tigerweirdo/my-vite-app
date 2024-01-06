@@ -128,9 +128,9 @@ const SliderManager = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={() => showModal()} loading={loading}>Add New Slider</Button>
+            <Button type="primary" onClick={() => showModal()}style={{marginBottom: '10px'}} loading={loading}>Add New Slider</Button>
             <Table dataSource={sliders} rowKey="_id" columns={columns} loading={loading} />
-                        <Modal title={editingSlider ? "Edit Slider" : "Add New Slider"} visible={isModalVisible} onCancel={handleCancel} footer={null} width={1000}>
+                        <Modal title={editingSlider ? "Edit Slider" : "Add New Slider"} open={isModalVisible} onCancel={handleCancel} footer={null} width={1000}>
                 <Form  key={editingSlider?._id || 'new'} // Ensure it rerenders with new initial values
     initialValues={editingSlider}
     onFinish={handleSubmit}

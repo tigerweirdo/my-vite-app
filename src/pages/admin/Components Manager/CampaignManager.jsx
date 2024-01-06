@@ -136,9 +136,9 @@ const CampaignManager = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={() => showModal()} loading={loading}>Add New Campaign</Button>
+            <Button type="primary" onClick={() => showModal()} style={{marginBottom: '10px'}}loading={loading}>Add New Campaign</Button>
             <Table dataSource={campaigns} columns={columns} rowKey="_id" loading={loading} />
-            <Modal title={editingCampaign ? "Edit Campaign" : "Add New Campaign"} visible={isModalVisible} onCancel={handleCancel} footer={null} width={1000}>
+            <Modal title={editingCampaign ? "Edit Campaign" : "Add New Campaign"} open={isModalVisible} onCancel={handleCancel} footer={null} width={1000}>
                 <Form key={editingCampaign?._id || 'new'} // Ensure it rerenders with new initial values
                 initialValues={editingCampaign} 
                 onFinish={handleSubmit} 
