@@ -53,7 +53,7 @@ const SliderManager = () => {
         setLoading(true);
         const method = editingSlider ? 'PUT' : 'POST';
         const url = editingSlider ? `${apiUrl}/api/slider/${editingSlider._id}` : `${apiUrl}/api/slider`;
-
+    
         fetch(url, {
             method: method,
             headers: {
@@ -66,18 +66,23 @@ const SliderManager = () => {
             }
             return response.json();
         })
-        .then(() => {
+        .then((updatedSlider) => {
+            if(editingSlider){
+                // Updating an existing slider
+                setSliders(sliders.map(slider => slider._id === editingSlider._id ? updatedSlider : slider));
+            } else {
+                // Adding a new slider
+                setSliders([...sliders, updatedSlider]);
+            }
             setIsModalVisible(false);
             setEditingSlider(null);
             message.success(`Slider ${editingSlider ? 'updated' : 'created'} successfully!`);
-            // Optionally: Update the sliders state locally instead of refetching from the backend
         })
         .catch(error => {
-            console.error('Submit Error:', error); // Utilize the error variable
+            console.error('Submit Error:', error);
             message.error(`Failed to ${editingSlider ? 'update' : 'create'} slider`);
         })
         .finally(() => setLoading(false));
-       
     };
     function truncate(str, num) {
         if (str.length > num) {
@@ -126,7 +131,10 @@ const SliderManager = () => {
             <Button type="primary" onClick={() => showModal()} loading={loading}>Add New Slider</Button>
             <Table dataSource={sliders} rowKey="_id" columns={columns} loading={loading} />
                         <Modal title={editingSlider ? "Edit Slider" : "Add New Slider"} visible={isModalVisible} onCancel={handleCancel} footer={null} width={1000}>
-                <Form initialValues={editingSlider} onFinish={handleSubmit} layout="vertical">
+                <Form  key={editingSlider?._id || 'new'} // Ensure it rerenders with new initial values
+    initialValues={editingSlider}
+    onFinish={handleSubmit}
+    layout="vertical">
                     <Form.Item label="Image URL" name="imageUrl" rules={[{ required: true, message: 'Please input the image URL!' }]}>
                         <Input />
                     </Form.Item>

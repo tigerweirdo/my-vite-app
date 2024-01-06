@@ -56,7 +56,7 @@ const CampaignManager = () => {
         setLoading(true);
         const method = editingCampaign ? 'PUT' : 'POST';
         const url = editingCampaign ? `${apiUrl}/api/campaign/${editingCampaign._id}` : `${apiUrl}/api/campaign`;
-
+    
         fetch(url, {
             method: method,
             headers: {
@@ -70,11 +70,17 @@ const CampaignManager = () => {
             }
             return response.json();
         })
-        .then(() => {
+        .then((updatedCampaign) => {
+            if(editingCampaign){
+                // Updating an existing campaign
+                setCampaigns(campaigns.map(campaign => campaign._id === editingCampaign._id ? updatedCampaign : campaign));
+            } else {
+                // Adding a new campaign
+                setCampaigns([...campaigns, updatedCampaign]);
+            }
             setIsModalVisible(false);
             setEditingCampaign(null);
             message.success(`Campaign ${editingCampaign ? 'updated' : 'created'} successfully!`);
-            // Optionally: Update campaigns state locally instead of refetching from the backend
         })
         .catch(error => {
             console.error('Submit Error:', error);
@@ -133,7 +139,10 @@ const CampaignManager = () => {
             <Button type="primary" onClick={() => showModal()} loading={loading}>Add New Campaign</Button>
             <Table dataSource={campaigns} columns={columns} rowKey="_id" loading={loading} />
             <Modal title={editingCampaign ? "Edit Campaign" : "Add New Campaign"} visible={isModalVisible} onCancel={handleCancel} footer={null} width={1000}>
-                <Form initialValues={editingCampaign} onFinish={handleSubmit} layout="vertical">
+                <Form key={editingCampaign?._id || 'new'} // Ensure it rerenders with new initial values
+                initialValues={editingCampaign} 
+                onFinish={handleSubmit} 
+                layout="vertical">
                     <Form.Item label="Image URL" name="imageUrl" rules={[{ required: true, message: 'Please input the image URL!' }]}>
                         <Input />
                     </Form.Item>
