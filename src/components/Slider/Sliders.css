@@ -13,13 +13,24 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: cover; /* Cover the entire area without stretching */
-  object-position: center; /* Adjust as needed */
+  height: 580px; /* or specific height, ensure this matches the actual image's aspect ratio */
+  object-fit: cover;
+  object-position: 60%;
   z-index: -1;
 }
+.image-placeholder {
+  width: 100%;
+  height: 300px; /* Gerçek görüntü yüksekliğiniz bu olabilir */
+  background-color: #e0e0e0;
+}
 
+.img-fluid.hidden {
+  display: none;
+}
+
+.img-fluid.visible {
+  display: block;
+}
   
   .slider-item .slider-title {
     font-size: 18px;
@@ -36,20 +47,18 @@
     z-index: 1;
   }
   
-  .slider-buttons {
+  .slider .slider-buttons {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    top: 50%;  
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 30px;
-    /* Belirli bir yükseklik değeri ekleyerek düzen kaymalarını önleyin. Örneğin: */
-    min-height: 50px; /* Bu değer size bağlı olarak değişebilir */
-    
   }
+  
   
   
   .slider-buttons button {
@@ -57,10 +66,11 @@
     height: 40px;
     border-radius: 100%;
     border: 1px solid #dee0ea;
-    background-color: rgba(255, 255, 255, 0.236);
+    background-color: white;
     opacity: 0.5;
     transition: 0.2s ease all;
   }
+  
   
   .slider-buttons button:hover {
     background-color: var(--primaryColor);;
@@ -70,7 +80,7 @@
   }
   
   .slider-buttons button i {
-    font-size: 20px;
+    font-size: 25px;
   }
   
   .slider .slider-dots {
@@ -96,32 +106,21 @@
   .slider .slider-dots .slider-dot:hover {
     opacity: 1;
   }
-  .slider .slider-dots .slider-dot.active {
-    opacity: 1;
-    width: 20px; /* Width of the square */
-    height: 20px; /* Height of the square */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
   
-  .slider .slider-dots .slider-dot.active span {
-    width: 12px; /* Width of the inner circle */
-    height: 12px; /* Height of the inner circle */
-    /* The rest of the styles remain the same */
-  }
   .slider .slider-dots .slider-dot span {
     display: inline-block;
     width: 12px;
     height: 12px;
-    background-color: var(--primaryColor);;
+    background-color: #1367ef;
     border-radius: 100%;
   }
+  
   
   .slider .slider-dots .slider-dot.active {
     opacity: 1;
   }
   
+ 
   .slider-item {
     opacity: 0.8; /* Starting opacity */
     animation: fade-in 1.5s forwards; /* Animation will proceed to the end and stay there */
@@ -135,19 +134,10 @@
   
   @media (max-width: 768px) {
     .slider-item {
-      height: 100vh; /* Adjust height for mobile devices */
+      height: 80vh; /* Adjust height for mobile devices */
     }
     
-    .slider-buttons button,
-.slider .slider-dots .slider-dot {
-  /* existing styles */
-  width: 40px; /* Example fixed width */
-  height: 40px; /* Example fixed height */
-  /* other styles */
-}
-   
+ 
   
-    .slider .slider-dots {
-      bottom: 10px; /* Adjust navigation dots position */
-    }
+   
   }

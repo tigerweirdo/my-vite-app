@@ -6,19 +6,15 @@ const SliderItem = ({ imageUrl, altText, title, description, buttonText, buttonL
     return <div className="slider-item error">Missing Image</div>;
   }
 
-  // Append dynamic resizing parameters to the imageUrl
-  const width = 800; // or dynamically calculate based on the container or viewport size
-  const height = 450; // adjust as needed for your aspect ratio
-  const dynamicImageUrl = `${imageUrl}?w=${width}&h=${height}&fit=crop`; // Adjust the parameters based on your image service
-
   return (
     <div className="slider-item fade">
       <div className="slider-image">
         <img 
-          src={dynamicImageUrl} 
-          className="img-fluid1" 
+          src={imageUrl} 
+          className="img-fluid"
           loading="lazy" 
-          alt={altText || "slider image"} />
+          alt={altText || "slider image"} 
+        />
       </div>
       <div className="container">
         <p className="slider-title">{title}</p>
