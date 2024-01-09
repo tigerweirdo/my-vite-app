@@ -170,3 +170,14 @@ input[type="number"]::-webkit-inner-spin-button {
   --yellow: #fbc119;
 }
 
+
+
+/* Colors */
+:root {
+  --primaryColor: #1b72eb;
+  --green: #269644;
+  --red: #e0382e;
+  --blue: #030405;
+  --yellow: #fbc119;
+}
+

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import  { useContext, useEffect, useState } from "react";
 import Proptypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
 import { CartContext } from "../../../context/CartProvider";
@@ -10,29 +10,59 @@ const Header = ({ setIsSearchShow }) => {
   const user = localStorage.getItem("token");
   const isAuthenticated = !!localStorage.getItem('token');
   const { pathname } = useLocation();
-
+  const [layoutSettings, setLayoutSettings] = useState(null);
   
+
+  const openSidebar = () => {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) {
+      sidebar.style.left = "0";
+    }
+  };
+
+  // Sidebar'ı kapatmak için fonksiyon
+  const closeSidebar = () => {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) {
+      sidebar.style.left = "-100%";
+    }
+  };
+  
+  useEffect(() => {
+    const fetchLayoutSettings = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/layout'); // API URL'inizi doğru şekilde ayarladığınızdan emin olun
+        if (!response.ok) throw new Error('Veri yüklenemedi');
+        const data = await response.json();
+        setLayoutSettings(data[0]); // Varsayılan olarak ilk kaydı alıyoruz
+      } catch (error) {
+        console.error("Layout settings yüklenirken hata oluştu:", error);
+      }
+    };
+
+    fetchLayoutSettings();
+  }, []);
 
   return (
     <header>
       <div className="global-notification">
         <div className="container">
-          <p>
-            SUMMER SALE FOR ALL SWIM SUITS AND FREE EXPRESS INTERNATIONAL
-            DELIVERY - OFF 50%!
-            <a href="shop.html"> SHOP NOW</a>
+        <p>
+        {layoutSettings?.promotions.message}
+        <a href={layoutSettings?.shopNowLink?.url}>{layoutSettings?.shopNowLink?.text}</a>
           </p>
-        </div>
+               </div>
       </div>
       <div className="header-row">
         <div className="container">
           <div className="header-wrapper">
-            <div className="header-mobile">
-              <i className="bi bi-list" id="btn-menu"></i>
-            </div>
+          <div className="header-mobile" onClick={openSidebar}>
+        <i className="bi bi-list" id="btn-menu"></i>
+      </div>
             <div className="header-left">
               <Link to={"/"} className="logo">
-                LOGO
+              <img src={layoutSettings?.logoUrl} alt="Logo" />
+
               </Link>
             </div>
             <div className="header-center" id="sidebar">
@@ -44,9 +74,38 @@ const Header = ({ setIsSearchShow }) => {
                       className={`menu-link ${pathname === "/" && "active"}`}
                     >
                       Home
+                      <i className="bi bi-chevron-down"></i>
                     </Link>
                     <div className="menu-dropdown-wrapper">
-                      
+                      <ul className="menu-dropdown-content">
+                        <li>
+                          <a href="#">Home Clean</a>
+                        </li>
+                        <li>
+                          <a href="#">Home Collection</a>
+                        </li>
+                        <li>
+                          <a href="#">Home Minimal</a>
+                        </li>
+                        <li>
+                          <a href="#">Home Modern</a>
+                        </li>
+                        <li>
+                          <a href="#">Home Parallax</a>
+                        </li>
+                        <li>
+                          <a href="#">Home Strong</a>
+                        </li>
+                        <li>
+                          <a href="#">Home Style</a>
+                        </li>
+                        <li>
+                          <a href="#">Home Unique</a>
+                        </li>
+                        <li>
+                          <a href="#">Home RTL</a>
+                        </li>
+                      </ul>
                     </div>
                   </li>
                   <li className="menu-list-item megamenu-wrapper">
@@ -180,11 +239,11 @@ const Header = ({ setIsSearchShow }) => {
                     >
                       Contact
                     </Link>
+
                   </li>
                 </ul>
               </nav>
-              <i className="bi-x-circle" id="close-sidebar"></i>
-            </div>
+              <i className="bi-x-circle" id="close-sidebar" onClick={closeSidebar}></i>            </div>
             <div className="header-right">
               <div className="header-right-links">
               <Link to={isAuthenticated ? "/profile" : "/auth"} className="header-account">
