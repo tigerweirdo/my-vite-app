@@ -149,6 +149,15 @@ const AdminLayout = ({ children }) => {
       },
     },
     {
+      key: '17',
+      icon: <SettingOutlined />,
+      label: 'Layout Settings',
+      path: '/admin/layout',
+      onClick: () => {
+        navigate('/admin/layout');
+      },
+    },
+    {
       key: "13",
       icon: <RollbackOutlined />,
       label: "Ana Sayfaya Git",

@@ -27,6 +27,7 @@ import DashboardPage from "./pages/Admin/DashboardPage";
 import Contact from "./pages/Admin/Contact/Contact";
 import Blog from "./pages/Admin/Blog";
 import ComponentsManager from "./pages/Admin/Components Manager/ComponentsManager";
+import LayoutManager from "./pages/Admin/LayoutSettingsPage";
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route path="Contact" element={<Contact />} />
         <Route path="Blog" element={<Blog />} />
         <Route path="components" element={<ComponentsManager />} /> 
+        <Route path="layout" element={<LayoutManager />} /> 
       </Route>
     </Routes>
   );
